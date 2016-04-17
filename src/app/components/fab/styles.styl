@@ -1,0 +1,26 @@
+@import "../variables";
+
+:host
+    background white
+    display flex
+    width fabsize
+    height fabsize
+    flex-flow row wrap
+    align-items center
+    justify-content center
+    align-content center
+    border-radius 100%
+    transform scale(0.93)
+    transition all 0.5s ease-in-out
+    cursor pointer
+    opacity 0.9
+    margin 10px
+    > *
+        text-align center
+        transition all 0.5s ease-in-out
+        flex 0 0 100%
+    &:hover
+        transform none
+        opacity 1
+    .mdi
+        font-size 2em

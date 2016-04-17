@@ -70,7 +70,7 @@ module.exports = function makeWebpackConfig() {
     cache: !isTest,
     root: root(),
     // only discover files that have those extensions
-    extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
+    extensions: ['', '.ts', '.js', '.json', '.css', '.styl', '.scss', '.sass', '.html'],
     alias: {
       'app': 'src/app',
       'common': 'src/common'
@@ -103,7 +103,7 @@ module.exports = function makeWebpackConfig() {
       },
 
       // copy those assets to output
-      {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file?name=fonts/[name].[hash].[ext]?'},
+      {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?.*)?$/, loader: 'file?name=fonts/[name].[hash].[ext]?'},
 
       // Support for *.json files.
       {test: /\.json$/, loader: 'json'},
@@ -114,21 +114,37 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.css$/,
         exclude: root('src', 'app'),
+        // original : css?sourceMap!postcss
+        // style loader : style!css?sourceMap
         loader: isTest ? 'null' : ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
       },
       // all css required in src/app files will be merged in js files
+      // original : raw!postcss
+      // style loader : style!css
       {test: /\.css$/, include: root('src', 'app'), loader: 'raw!postcss'},
 
       // support for .scss files
       // use 'null' loader in test mode (https://github.com/webpack/null-loader)
       // all css in src/style will be bundled in an external css file
       {
-        test: /\.scss$/,
+        test: /\.styl$/,
         exclude: root('src', 'app'),
+        // original : css?sourceMap!postcss!sass
+        // stylus : style!css?sourceMap&modules!stylus
+        loader: isTest ? 'null' : ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!stylus')
+      },
+      {
+        test: /\.(scss|sass)$/,
+        exclude: root('src', 'app'),
+        // original : css?sourceMap!postcss!sass
+        // stylus : style!css?sourceMap&modules!stylus
         loader: isTest ? 'null' : ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass')
       },
       // all css required in src/app files will be merged in js files
-      {test: /\.scss$/, exclude: root('src', 'style'), loader: 'raw!postcss!sass'},
+      // original : raw!postcss!sass
+      // stylus: style!css?modules!stylus
+      {test: /\.styl$/, exclude: root('src', 'style'), loader: 'raw!postcss!stylus'},
+      {test: /\.(scss|sass)$/, exclude: root('src', 'style'), loader: 'raw!postcss!sass'},
 
       // support for .html as raw text
       // todo: change the loader to something that adds a hash to images

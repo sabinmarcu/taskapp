@@ -1,8 +1,18 @@
-// styles in src/style directory are applied to the whole page
-body {
-    background: #0147A7;
-    color: #fff;
+$mdi-font-path: "../../node_modules/mdi/fonts";
+
+@import "../../node_modules/mdi/scss/materialdesignicons.scss";
+
+body, html {
+    background: black;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-size: 1em;
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
-a {
-    color: #03A9F4;
+
+* {
+    box-sizing: content-box;
 }
